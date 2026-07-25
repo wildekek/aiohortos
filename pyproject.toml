@@ -1,0 +1,86 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "aiohortos"
+version = "0.1.0"
+description = "Async client for the Ridder HortOS Automation API (HortiMaX greenhouse controllers)"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.13"
+authors = [{ name = "Willem Vooijs", email = "willem@vooijs.eu" }]
+keywords = ["hortos", "ridder", "hortimax", "greenhouse", "horticulture", "asyncio"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Framework :: AsyncIO",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Home Automation",
+  "Typing :: Typed",
+]
+dependencies = ["aiohttp>=3.9", "yarl>=1.9"]
+
+[project.urls]
+Homepage = "https://github.com/wildekek/aiohortos"
+Issues = "https://github.com/wildekek/aiohortos/issues"
+Changelog = "https://github.com/wildekek/aiohortos/releases"
+
+[dependency-groups]
+dev = [
+  "mypy==1.18.2",
+  "pytest==8.4.2",
+  "pytest-asyncio==1.2.0",
+  "pytest-cov==7.0.0",
+  "ruff==0.14.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aiohortos"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "--cov=aiohortos --cov-report=term-missing"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+  "ANN401",  # Any is the honest type for raw JSON payloads
+  "COM812",  # conflicts with the formatter
+  "D203",    # incompatible with D211
+  "D213",    # incompatible with D212
+  "ISC001",  # conflicts with the formatter
+  "TRY003",  # long messages in raises read fine here
+  "EM101",   # ... and are clearer inline than via a variable
+  "EM102",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+  "ANN201",  # test functions all return None
+  "C901",    # the fake server is branchy on purpose
+  "D103",    # test names say what they test
+  "D401",
+  "PLR2004", # literals in assertions are the point
+  "PT012",   # a few raises blocks set up their own input
+  "S101",    # pytest is built on assert
+  "S105",    # "tokens" in fixtures are not secrets
+  "SLF001",  # tests may reach into the client
+  "TC003",
+]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
