@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "aiohortos"
-version = "0.3.0"
+version = "0.3.1"
 description = "Async client for the Ridder HortOS Automation API (HortiMaX greenhouse controllers)"
 readme = "README.md"
 license = "MIT"

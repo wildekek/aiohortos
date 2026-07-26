@@ -110,9 +110,10 @@ class HortosClient:
             if tokens is not None and _still_valid(tokens.refresh_expires_at):
                 try:
                     return (await self._refresh(tokens)).token
-                except HortosResponseError:
-                    # A refresh can fail for reasons the API does not spell
-                    # out; a full re-authentication is the documented remedy.
+                except (HortosAuthenticationError, HortosResponseError):
+                    # A refresh token can be rejected (401/403) or fail for
+                    # reasons the API does not spell out; either way the API
+                    # key is still good, so re-authenticate with it.
                     pass
             return (await self._authenticate()).token
 

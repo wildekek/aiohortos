@@ -35,6 +35,8 @@ class FakeHortos:
     reject_bearer_times: int = 0
     #: Make /v1/token/refresh fail, to exercise the fallback path.
     break_refresh: bool = False
+    #: Make /v1/token/refresh reject the refresh token itself.
+    reject_refresh: bool = False
     #: Answer every GET with a payload of the wrong shape.
     misbehave: bool = False
     #: Answer every GET with a body that is not JSON at all.
@@ -158,6 +160,8 @@ def build_app(fake: FakeHortos) -> web.Application:
         assert "refreshToken" in body
         if fake.break_refresh:
             return web.Response(status=500, text="refresh exploded")
+        if fake.reject_refresh:
+            return web.Response(status=401, text="refresh token rejected")
         fake.refresh_calls += 1
         return web.json_response(fake.tokens(100 + fake.refresh_calls))
 

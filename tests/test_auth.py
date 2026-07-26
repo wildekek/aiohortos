@@ -73,6 +73,21 @@ async def test_failed_refresh_falls_back_to_reauthentication(
     assert fake_hortos.auth_calls == 2
 
 
+async def test_rejected_refresh_token_falls_back_to_reauthentication(
+    client: HortosClient, fake_hortos: FakeHortos
+) -> None:
+    """A refresh token can be revoked while the API key stays valid."""
+    fake_hortos.expire_immediately = True
+    await client.authenticate()
+    fake_hortos.expire_immediately = False
+    fake_hortos.reject_refresh = True
+
+    await client.get_device_names()
+
+    assert fake_hortos.refresh_calls == 0
+    assert fake_hortos.auth_calls == 2
+
+
 async def test_rejected_bearer_retries_once_then_raises(
     client: HortosClient, fake_hortos: FakeHortos
 ) -> None:
