@@ -3,6 +3,16 @@
 Async Python client for the **Ridder HortOS Automation API**, the cloud API
 behind [HortiMaX](https://www.ridder.com/) greenhouse process controllers.
 
+> **This is a community-built library. It is not an official Ridder product,
+> it is not certified by Ridder, and Ridder does not support it.** Ridder's
+> support covers the HortOS Automation API itself; anything about this
+> library belongs on its
+> [issue tracker](https://github.com/wildekek/aiohortos/issues).
+>
+> The API is still evolving and Ridder does not guarantee backward
+> compatibility for community integrations, so a future API change can alter
+> or remove what this library returns. Pin a version.
+
 The library is **read-only**: it authenticates with an API key and reads
 controllers, their health, and their readouts. It never writes setpoints.
 
@@ -92,5 +102,7 @@ ruff check . && ruff format --check . && mypy src
 
 ## Disclaimer
 
-Unofficial and not affiliated with Ridder. "HortOS" and "HortiMaX" are their
-trademarks.
+This library is not affiliated with, endorsed by, or certified by Ridder, and
+carries no warranty. "Ridder", "HortOS" and "HortiMaX" are used only to name
+the API and the products this library talks to; they are trademarks of their
+respective owner.
