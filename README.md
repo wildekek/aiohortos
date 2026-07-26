@@ -84,7 +84,19 @@ Errors all derive from `HortosError`:
   `IrrigationVolume-Measuered`.
 - Some readouts have `unitIdentifier: "Scalar"` and a numeric value that is
   really an enumeration member id from a table the API does not expose. They
-  are returned as-is; decoding them is the caller's problem.
+  are returned as-is. `CardinalWindDirection` is the one decoded so far:
+
+  ```python
+  from aiohortos import decode_cardinal_wind_direction
+
+  decode_cardinal_wind_direction(8783)  # 247.5, i.e. WSW
+  decode_cardinal_wind_direction(1234)  # None — not a member of the table
+  ```
+
+  The 16 compass points occupy contiguous ids 8772–8787 on a HortiMaX
+  controller, clockwise in 22.5° steps, confirmed over a day of history and
+  cross-checked against the official app. Anything outside that block, or
+  not a whole number, decodes to `None` rather than to a plausible bearing.
 - `Readout.name` embeds the source's user-defined name and is a poor label on
   its own — build names from `identifier` and `source` instead.
 

@@ -10,6 +10,12 @@ from .const import (
     RATE_LIMIT_REQUESTS,
     RATE_LIMIT_WINDOW,
 )
+from .enums import (
+    WIND_DIRECTION_CODE_NORTH,
+    WIND_DIRECTION_SECTORS,
+    WIND_DIRECTION_STEP_DEGREES,
+    decode_cardinal_wind_direction,
+)
 from .exceptions import (
     HortosAuthenticationError,
     HortosConnectionError,
@@ -35,6 +41,9 @@ __all__ = [
     "MAX_HISTORY_WINDOW",
     "RATE_LIMIT_REQUESTS",
     "RATE_LIMIT_WINDOW",
+    "WIND_DIRECTION_CODE_NORTH",
+    "WIND_DIRECTION_SECTORS",
+    "WIND_DIRECTION_STEP_DEGREES",
     "Device",
     "DeviceHealth",
     "HortosAuthenticationError",
@@ -50,4 +59,5 @@ __all__ = [
     "ReadoutValueType",
     "Source",
     "TokenPair",
+    "decode_cardinal_wind_direction",
 ]
