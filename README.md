@@ -77,8 +77,11 @@ Errors all derive from `HortosError`:
   The client handles both, and re-authenticates when a token is rejected.
 - The API allows **100 requests per 15 seconds** per key. The library does not
   throttle; pace your own polling.
-- Unchanged readouts are refreshed at most every 5 minutes, so polling faster
-  than that gains nothing.
+- A controller publishes its changed readouts in a batch about once a minute;
+  a readout whose value does not change keeps its old timestamp for up to 5
+  minutes. Polling faster than once a minute gains nothing, polling slower
+  drops updates. (Measured on a Multima: ~55–65 of 621 readouts carried a new
+  value in each 60s batch, the rest were unchanged over 5 minutes.)
 - Readout identifiers follow `<CamelCaseSubject>-<Kind>`, e.g.
   `VentPositionLeewardSide-Measured`. One upstream typo exists in the wild:
   `IrrigationVolume-Measuered`.

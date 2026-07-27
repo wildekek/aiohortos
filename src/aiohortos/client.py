@@ -225,8 +225,10 @@ class HortosClient:
     async def get_latest_readouts(self, device: str) -> list[Readout]:
         """Return the latest value of every readout of one controller.
 
-        Unchanged readouts are refreshed at most every five minutes, so
-        polling faster than that gains nothing.
+        A controller publishes its changed readouts in a batch about once a
+        minute; a readout whose value does not change keeps its old timestamp
+        for up to five minutes. Polling faster than once a minute therefore
+        gains nothing, but polling slower drops updates.
         """
         path = f"/v1/readouts/device/{_segment(device)}/values/latest"
         data = await self._get(path)
